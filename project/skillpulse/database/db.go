@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -13,12 +14,12 @@ import (
 var DB *sql.DB
 
 func Connect() error {
-	host := getEnv("DB_HOST", "localhost")
-	port := getEnv("DB_PORT", "3306")
-	user := getEnv("DB_USER", "skillpulse")
-	password := getEnv("DB_PASSWORD", "skillpulse123")
-	dbname := getEnv("DB_NAME", "skillpulse")
-	ssl := getEnv("DB_SSL", "false")
+	host := strings.TrimSpace(getEnv("DB_HOST", "localhost"))
+	port := strings.TrimSpace(getEnv("DB_PORT", "3306"))
+	user := strings.TrimSpace(getEnv("DB_USER", "skillpulse"))
+	password := strings.TrimSpace(getEnv("DB_PASSWORD", "skillpulse123"))
+	dbname := strings.TrimSpace(getEnv("DB_NAME", "skillpulse"))
+	ssl := strings.TrimSpace(getEnv("DB_SSL", "false"))
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, password, host, port, dbname)
 	if ssl == "true" {
