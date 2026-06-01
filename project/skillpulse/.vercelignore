@@ -1,0 +1,9 @@
+main.go
+Dockerfile
+docker-compose.yml
+.env
+.dockerignore
+.env.example
+.env.vercel
+mysql/
+nginx/

@@ -1,11 +1,15 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "api/index.go", "use": "@vercel/go" },
+    { "src": "frontend/**", "use": "@vercel/static" }
+  ],
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.go" },
-    { "source": "/health", "destination": "/api/index.go" },
-    { "source": "/css/(.*)", "destination": "/frontend/css/$1" },
-    { "source": "/js/(.*)", "destination": "/frontend/js/$1" },
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/index.html", "destination": "/frontend/index.html" }
+    { "source": "/api/(.*)", "destination": "api/index.go" },
+    { "source": "/health", "destination": "api/index.go" },
+    { "source": "/css/(.*)", "destination": "frontend/css/$1" },
+    { "source": "/js/(.*)", "destination": "frontend/js/$1" },
+    { "source": "/", "destination": "frontend/index.html" },
+    { "source": "/index.html", "destination": "frontend/index.html" }
   ]
 }
