@@ -1,0 +1,9 @@
+# Exclude directories not needed for building Go backend
+frontend/
+mysql/
+nginx/
+.git/
+.env
+docker-compose.yml
+vercel.json
+api/

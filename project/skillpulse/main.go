@@ -10,7 +10,9 @@ import (
 )
 
 func main() {
-	database.Connect()
+	if err := database.Connect(); err != nil {
+		log.Fatalf("Fatal: Database connection failed: %v", err)
+	}
 
 	router := gin.Default()
 

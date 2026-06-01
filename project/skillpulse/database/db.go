@@ -12,17 +12,28 @@ import (
 
 var DB *sql.DB
 
-func Connect() {
+func Connect() error {
 	host := getEnv("DB_HOST", "localhost")
 	port := getEnv("DB_PORT", "3306")
 	user := getEnv("DB_USER", "skillpulse")
 	password := getEnv("DB_PASSWORD", "skillpulse123")
 	dbname := getEnv("DB_NAME", "skillpulse")
+	ssl := getEnv("DB_SSL", "false")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", user, password, host, port, dbname)
+	if ssl == "true" {
+		dsn += "&tls=true"
+	} else if ssl == "skip-verify" {
+		dsn += "&tls=skip-verify"
+	}
 
 	var err error
-	for i := 0; i < 30; i++ {
+	maxAttempts := 30
+	if os.Getenv("VERCEL") == "1" {
+		maxAttempts = 3
+	}
+
+	for i := 0; i < maxAttempts; i++ {
 		DB, err = sql.Open("mysql", dsn)
 		if err == nil {
 			err = DB.Ping()
@@ -31,14 +42,21 @@ func Connect() {
 				DB.SetMaxOpenConns(10)
 				DB.SetMaxIdleConns(5)
 				DB.SetConnMaxLifetime(5 * time.Minute)
-				return
+				return nil
 			}
 		}
-		log.Printf("Waiting for database... attempt %d/30", i+1)
-		time.Sleep(2 * time.Second)
+
+		log.Printf("Waiting for database... attempt %d/%d (error: %v)", i+1, maxAttempts, err)
+		if i < maxAttempts-1 {
+			sleepDur := 2 * time.Second
+			if os.Getenv("VERCEL") == "1" {
+				sleepDur = 500 * time.Millisecond
+			}
+			time.Sleep(sleepDur)
+		}
 	}
 
-	log.Fatalf("Could not connect to database: %v", err)
+	return fmt.Errorf("could not connect to database after %d attempts: %w", maxAttempts, err)
 }
 
 func getEnv(key, fallback string) string {
