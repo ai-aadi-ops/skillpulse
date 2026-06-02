@@ -25,17 +25,21 @@ Throughout this course, we build **SkillPulse** — a Skill Tracker / Learning D
 
 **Think of it as your personal GitHub contribution graph, but for learning.**
 
-### Tech Stack
+### Tech Stack & Deployment Options
 
-| Component | Technology |
-|-----------|-----------|
-| Backend | Go (Gin framework) |
-| Frontend | HTML / CSS / JavaScript |
-| Database | MySQL 8.0 |
-| Web Server | Nginx (reverse proxy) |
-| Containers | Docker + Docker Compose |
-| CI/CD | Azure Pipelines (YAML) |
-| Deployment | Azure VM + Self-hosted Agent |
+This project supports two architectures: a **standard VM deployment** (core course) and a **cloud-native serverless deployment** (alternative).
+
+| Component | Standard Deployment (Course Core) | Serverless Deployment (Alternative) |
+| :--- | :--- | :--- |
+| **Backend** | Go (Gin framework) | Go Serverless Functions (`@vercel/go`) |
+| **Frontend** | HTML / CSS / JavaScript | HTML / CSS / JavaScript (Vercel Edge Network) |
+| **Database** | MySQL 8.0 (Containerized) | TiDB Cloud Serverless (MySQL compatible, TLS/SSL) |
+| **Web Server**| Nginx (Reverse Proxy) | Vercel Router / URL Rewrites |
+| **Containers**| Docker + Docker Compose | N/A |
+| **CI/CD / IaC**| Azure Pipelines (YAML) + Terraform | Vercel Git Integration |
+| **Hosting** | Azure VM + Self-hosted Agent | Vercel Serverless Hosting |
+
+For detailed steps on serverless configuration, refer to the [SkillPulse Serverless Deployment Guide (PDF)](SkillPulse_Vercel_Deployment_Guide.pdf) or the [SkillPulse App README](project/skillpulse/README.md).
 
 ## Prerequisites
 
@@ -127,6 +131,8 @@ azure-devops-zero-to-hero/
 - [Azure DevOps Documentation](https://learn.microsoft.com/en-us/azure/devops/?view=azure-devops)
 - [Azure DevOps Pricing](https://azure.microsoft.com/en-us/pricing/details/devops/azure-devops-services/)
 - [Azure Free Account](https://azure.microsoft.com/free/)
+- [Vercel Documentation](https://vercel.com/docs)
+- [TiDB Cloud Console](https://tidbcloud.com)
 - [Go Documentation](https://go.dev/doc/)
 - [Docker Documentation](https://docs.docker.com/)
 
